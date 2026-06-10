@@ -33,13 +33,20 @@ export async function onRequestPost(context) {
   }
 
   // 4. Dispatch payload to Resend API
+  // const resendPayload = {
+  //   // NOTE: Change 'onboarding@resend.dev' to 'noreply@isccredit.com' ONLY after domain records propagate
+  //   from: 'ISC Website Forms <onboarding@resend.dev>', 
+  //   to: 'sales@isccredit.com',
+  //   subject: `New Lead Notification - ${data.name || data['contact-name'] || 'New Contact'}`,
+  //   text: emailBody
+  // };
+
   const resendPayload = {
-    // NOTE: Change 'onboarding@resend.dev' to 'noreply@isccredit.com' ONLY after domain records propagate
-    from: 'ISC Website Forms <onboarding@resend.dev>', 
-    to: 'sales@isccredit.com',
-    subject: `New Lead Notification - ${data.name || data['contact-name'] || 'New Contact'}`,
-    text: emailBody
-  };
+  from: 'ISC Website Forms <onboarding@resend.dev>', 
+  to: 'webadmin@isccredit.com', // Changed temporarily for testing
+  subject: `New Lead Notification - ${data.name || data['contact-name'] || 'New Contact'}`,
+  text: emailBody
+};
 
   const resendResponse = await fetch('https://api.resend.com/emails', {
     method: 'POST',
