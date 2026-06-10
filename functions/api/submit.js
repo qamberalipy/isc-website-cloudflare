@@ -1,18 +1,14 @@
 export async function onRequestPost(context) {
-  // context.request is the incoming Request object
-  // context.env holds your environment variables (like your Resend API key)
   const { request, env } = context;
 
-  // 1. Parse the incoming form data
+  // 1. Parse the incoming multi-page form fields
   const formData = await request.formData();
   const data = Object.fromEntries(formData.entries());
-  
-  // Extract Turnstile token
   const token = formData.get('cf-turnstile-response');
 
-  // 2. Validate Turnstile Token
+  // 2. Protect with Cloudflare Turnstile CAPTCHA
   if (!token) {
-    return new Response('Missing CAPTCHA', { status: 400 });
+    return new Response('Missing Security Verification Token', { status: 400 });
   }
 
   const turnstileVerify = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
@@ -23,24 +19,25 @@ export async function onRequestPost(context) {
 
   const turnstileResult = await turnstileVerify.json();
   if (!turnstileResult.success) {
-    return new Response('CAPTCHA verification failed', { status: 400 });
+    return new Response('Security Verification Failed', { status: 400 });
   }
 
-  // 3. Format the email payload
-  // Cleanly format all submitted fields (ignores the turnstile token in the email body)
-  let emailBody = 'New Form Submission:\n\n';
+  // 3. Format email body string beautifully
+  let emailBody = `You have received a new website form submission.\n\n`;
   for (const [key, value] of Object.entries(data)) {
-    if (key !== 'cf-turnstile-response') {
-      emailBody += `${key}: ${value}\n`;
+    if (key !== 'cf-turnstile-response' && value) {
+      // Clean up field names for readability
+      const cleanKey = key.replace('-', ' ').toUpperCase();
+      emailBody += `${cleanKey}: ${value}\n`;
     }
   }
 
-  // 4. Send the email via Resend
-  // Brian explicitly requested all forms go to sales@isccredit.com
+  // 4. Dispatch payload to Resend API
   const resendPayload = {
-    from: 'Website Form <onboarding@resend.dev>', // You will update this to their verified domain later
+    // NOTE: Change 'onboarding@resend.dev' to 'noreply@isccredit.com' ONLY after domain records propagate
+    from: 'ISC Website Forms <onboarding@resend.dev>', 
     to: 'sales@isccredit.com',
-    subject: `New Lead from ISC Website: ${data.name || 'Unknown'}`,
+    subject: `New Lead Notification - ${data.name || data['contact-name'] || 'New Contact'}`,
     text: emailBody
   };
 
@@ -54,10 +51,11 @@ export async function onRequestPost(context) {
   });
 
   if (!resendResponse.ok) {
-    return new Response('Failed to send email', { status: 500 });
+    const errorText = await resendResponse.text();
+    return new Response(`Email Dispatch Failed: ${errorText}`, { status: 500 });
   }
 
-  // 5. Redirect the user back to the page with a success parameter
+  // 5. Success Redirect back to originating page with parameter
   const referer = request.headers.get('Referer') || '/';
   const url = new URL(referer);
   url.searchParams.set('success', 'true');
