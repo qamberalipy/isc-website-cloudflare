@@ -1,0 +1,14 @@
+# Cloudflare Pages / Netlify _headers file
+# This file is read by both Cloudflare Pages and Netlify for header configuration.
+# On Cloudflare Pages, this file replaces the [[headers]] sections in netlify.toml.
+
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/ISC.png
+  Cache-Control: public, max-age=86400
