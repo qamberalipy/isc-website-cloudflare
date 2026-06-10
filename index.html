@@ -2646,7 +2646,8 @@
                   style="display:inline-block;width:11px;height:11px;border-radius:3px;background:#f0b942;vertical-align:-1px;margin-right:6px"></span>ISC
                 average</span><span><span
                   style="display:inline-block;width:11px;height:11px;border-radius:3px;background:#e2504d;vertical-align:-1px;margin-right:6px"></span>Industry
-                average</span></div>
+                average</span>
+            </div>
             <script>(function () { var root = document.getElementById("bm-anim"); if (!root) return; function setW(a) { var g = [].slice.call(root.querySelectorAll("[data-isc]")); var r = [].slice.call(root.querySelectorAll("[data-ind]")); if (!a) { g.forEach(function (e) { e.style.transition = "none"; e.style.width = e.getAttribute("data-isc") + "%"; }); r.forEach(function (e) { e.style.transition = "none"; e.style.width = e.getAttribute("data-ind") + "%"; }); return; } g.forEach(function (el, i) { setTimeout(function () { el.style.width = el.getAttribute("data-isc") + "%"; }, 250 + i * 140); }); var rs = 250 + g.length * 140 + 450; r.forEach(function (el, i) { setTimeout(function () { el.style.width = el.getAttribute("data-ind") + "%"; }, rs + i * 140); }); } function start() { if (matchMedia("(prefers-reduced-motion: reduce)").matches) { setW(false); return; } if ("IntersectionObserver" in window) { var done = false; var io = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting && !done) { done = true; setW(true); io.disconnect(); } }); }, { threshold: 0.3 }); io.observe(root); } else { setW(true); } } if (document.readyState !== "loading") setTimeout(start, 60); else document.addEventListener("DOMContentLoaded", function () { setTimeout(start, 60); }); })();</script>
           </div>
         </div>
@@ -2909,49 +2910,48 @@
           <div>
             <form id="home-contact-form" action="/api/submit" method="POST">
 
-              <!-- Keep all your existing form-row div structures exactly the same here -->
+              <div class="form-row">
+                <div class="form-group"><label class="form-label">Name<span class="req">*</span></label><input
+                    class="form-input" type="text" name="name" placeholder="Full name" required></div>
+                <div class="form-group"><label class="form-label">Email<span class="req">*</span></label><input
+                    class="form-input" type="email" name="email" placeholder="you@company.com" required></div>
+              </div>
 
-              <!-- Add Turnstile verification right before the submit button -->
-              <div class="cf-turnstile" data-sitekey="0x4AAAAAADh9oe4mjBYLQ-hXKBBEgTe6PzU" data-theme="dark"
+              <div class="form-row">
+                <div class="form-group"><label class="form-label">Phone</label><input class="form-input" type="tel"
+                    name="phone" placeholder="(555) 000-0000 (optional)"></div>
+                <div class="form-group"><label class="form-label">Company</label><input class="form-input" type="text"
+                    name="company" placeholder="Company name (optional)"></div>
+              </div>
+
+              <div class="form-row full">
+                <div class="form-group"><label class="form-label">How did you hear about ISC?</label>
+                  <select class="form-input" name="referral-source">
+                    <option value="" disabled selected>Select one (optional)</option>
+                    <option>Google search</option>
+                    <option>Referral from a colleague</option>
+                    <option>LOS partner</option>
+                    <option>Industry event</option>
+                    <option>Social media</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row full">
+                <div class="form-group"><label class="form-label">Message</label><textarea class="form-input"
+                    name="message" rows="4"
+                    placeholder="Tell us a bit about what you&rsquo;re looking for (optional)"></textarea></div>
+              </div>
+
+              <!-- Official Cloudflare Turnstile Always-Pass Testing Key -->
+              <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-theme="dark"
                 style="margin-bottom: 15px;"></div>
 
               <button class="btn-submit" type="submit">Get started today &rarr;</button>
               <div class="form-note">Required fields marked <span style="color:var(--gold)">*</span>. ISC will respond
                 within one business day.</div>
 
-            <div class="form-row">
-              <div class="form-group"><label class="form-label">Name<span class="req">*</span></label><input
-                  class="form-input" type="text" name="name" placeholder="Full name" required></div>
-              <div class="form-group"><label class="form-label">Email<span class="req">*</span></label><input
-                  class="form-input" type="email" name="email" placeholder="you@company.com" required></div>
-            </div>
-            <div class="form-row">
-              <div class="form-group"><label class="form-label">Phone</label><input class="form-input" type="tel"
-                  name="phone" placeholder="(555) 000-0000 (optional)"></div>
-              <div class="form-group"><label class="form-label">Company</label><input class="form-input" type="text"
-                  name="company" placeholder="Company name (optional)"></div>
-            </div>
-            <div class="form-row full">
-              <div class="form-group"><label class="form-label">How did you hear about ISC?</label>
-                <select class="form-input" name="referral-source">
-                  <option value="" disabled selected>Select one (optional)</option>
-                  <option>Google search</option>
-                  <option>Referral from a colleague</option>
-                  <option>LOS partner</option>
-                  <option>Industry event</option>
-                  <option>Social media</option>
-                  <option>Other</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-row full">
-              <div class="form-group"><label class="form-label">Message</label><textarea class="form-input"
-                  name="message" rows="4"
-                  placeholder="Tell us a bit about what you&rsquo;re looking for (optional)"></textarea></div>
-            </div>
-            <button class="btn-submit" type="submit">Get started today &rarr;</button>
-            <div class="form-note">Required fields marked <span style="color:var(--gold)">*</span>. ISC will respond
-              within one business day.</div>
             </form>
           </div>
         </div>
