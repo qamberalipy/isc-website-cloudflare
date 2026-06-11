@@ -41,9 +41,9 @@ export async function onRequestPost(context) {
   //   text: emailBody
   // };
 
-  const resendPayload = {
-  from: 'ISC Website Forms <onboarding@resend.dev>', 
-  to: 'webadmin@isccredit.com', // Changed temporarily for testing
+const resendPayload = {
+  from: 'ISC Website Forms <noreply@isccredit.com>', // Updated to your verified domain
+  to: 'sales@isccredit.com', 
   subject: `New Lead Notification - ${data.name || data['contact-name'] || 'New Contact'}`,
   text: emailBody
 };
